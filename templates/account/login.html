@@ -1,35 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<section class="section-conten padding-y">
 
-<!-- ============================ COMPONENT LOGIN   ================================= -->
-	<div class="card mx-auto" style="max-width: 380px; margin-top:40px;">
-      <div class="card-body">
-      <h4 class="card-title mb-4">Sign in</h4>
-      <form method="POST">
-        {% csrf_token %}
-      	  <a href="#" class="btn btn-danger btn-block mb-4"> <i class="fab fa-google"></i> &nbsp  Sign in with Google</a>
-          <div class="form-group">
-			 <input name="email" class="form-control" placeholder="Email" type="email">
-          </div> <!-- form-group// -->
-          <div class="form-group">
-			<input name="password" class="form-control" placeholder="Password" type="password">
-          </div> <!-- form-group// -->
-          
-          <div class="form-group">
-          	<a href="#" class="float-right">Forgot password?</a> 
-          </div> <!-- form-group form-check .// -->
-          <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block"> Login  </button>
-          </div> <!-- form-group// -->    
-      </form>
-      </div> <!-- card-body.// -->
-    </div> <!-- card .// -->
-
-     <p class="text-center mt-4">Don't have account? <a href="{% url "user_register" %}">Sign up</a></p>
-     <br><br>
-
+<section class="section-conten py-5">
+    <div class="container">
+        <!-- ============================ COMPONENT LOGIN ================================= -->
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-sm border-0 rounded-3 mx-auto">
+                    <div class="card-body p-4 p-md-5">
+                        <h4 class="card-title mb-4 text-center">Sign in</h4>
+                        
+                        <form method="POST" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Google Sign-in Button -->
+                            <a href="#" class="btn btn-outline-danger d-flex align-items-center justify-content-center mb-4 w-100">
+                                <i class="fab fa-google me-2"></i>Sign in with Google
+                            </a>
+                            
+                            <div class="text-center mb-4 position-relative">
+                                <hr class="my-0">
+                                <span class="px-2 bg-white position-absolute top-50 start-50 translate-middle">or</span>
+                            </div>
+                            
+                            <!-- Email Input -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label visually-hidden">Email</label>
+                                <input name="email" id="email" class="form-control form-control-lg" 
+                                       placeholder="Email" type="email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+                            
+                            <!-- Password Input -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label visually-hidden">Password</label>
+                                <input name="password" id="password" class="form-control form-control-lg" 
+                                       placeholder="Password" type="password" required>
+                                <div class="invalid-feedback">
+                                    Please enter your password
+                                </div>
+                            </div>
+                            
+                            <!-- Forgot Password Link -->
+                            <div class="mb-3 text-end">
+                                <a href="#" class="text-decoration-none">Forgot password?</a>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="mb-3">
+                                <button type="submit" class="btn bg-secondary text-light btn-lg w-100">Login</button>
+                            </div>
+                        </form>
+                        
+                        <!-- Sign Up Link -->
+                        <p class="text-center mt-4 mb-0">
+                            Don't have an account? 
+                            <a href="{% url 'user_register' %}" class="text-decoration-none">Sign up</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 {% endblock content %}

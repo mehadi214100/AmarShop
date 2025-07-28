@@ -39,7 +39,7 @@ def user_login(request):
         else:
             login(request,user)
             messages.success(request, "You have successfully logged in.")
-            return HttpResponse("profile")
+            return redirect("home")
 
     return render(request,"account/login.html")
 
@@ -58,3 +58,9 @@ def verify_email(request,uidb64,token):
     else:
         messages.error(request, "The verification link is invalid or has expired.")
         return redirect("user_register")
+    
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("user_login")
