@@ -6,7 +6,7 @@ from django.contrib.auth import login,logout,authenticate
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from .models import User,userProfile
-
+from django.contrib.auth.hashers import check_password
 
 def user_register(request):
 
@@ -30,16 +30,22 @@ def user_login(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        user = authenticate(request,email=email,password=password)
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "Invalid email")
+            return redirect("login")
 
-        if not user:
-            messages.error(request, "Invalid email or password.")
-        elif not user.is_active:
+            
+        if not user.is_active:
             messages.error(request, "Your email is not verified yet.")
+        elif not check_password(password,user.password):
+            messages.error(request, "Invalid email or password.")
         else:
             login(request,user)
             messages.success(request, "You have successfully logged in.")
             return redirect("home")
+        
 
     return render(request,"account/login.html")
 

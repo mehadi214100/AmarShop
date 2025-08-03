@@ -92,33 +92,6 @@
 </section>
 <!-- ========================= SECTION MAIN END// ========================= -->
 
-<!-- Message Toast -->
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    {% for message in messages %}
-    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header 
-            {% if message.tags == 'error' %}bg-danger text-white
-            {% elif message.tags == 'warning' %}bg-warning
-            {% elif message.tags == 'success' %}bg-success text-white
-            {% elif message.tags == 'info' %}bg-info text-white
-            {% else %}bg-primary text-white{% endif %}">
-            <strong class="me-auto">
-                {% if message.tags == 'error' %}Error
-                {% elif message.tags == 'warning' %}Warning
-                {% elif message.tags == 'success' %}Success
-                {% elif message.tags == 'info' %}Info
-                {% else %}Message{% endif %}
-            </strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                {% if message.tags == 'error' or message.tags == 'success' or message.tags == 'info' or not message.tags %}
-                style="filter: invert(1)"{% endif %}></button>
-        </div>
-        <div class="toast-body">
-            {{ message }}
-        </div>
-    </div>
-    {% endfor %}
-</div>
 
 <!-- =============== SECTION DEAL =============== -->
 <section class="padding-bottom">
