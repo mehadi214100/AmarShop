@@ -3,11 +3,15 @@ from accounts.models import User
 from django.core.validators import MaxValueValidator,MinValueValidator
 from decimal import Decimal
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
     slug = models.SlugField(unique=True,max_length=150)
     image = models.ImageField(upload_to="category/",blank=True,null=True)
+    description = models.TextField(blank=True,null=True)
+    is_popular = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -16,10 +20,13 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
         ordering = ['name']
 
+    
+
     def __str__(self):
         return self.name
 
 class Product(models.Model):
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="products")
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True,max_length=200)
     description = models.TextField(blank=True)
@@ -28,8 +35,8 @@ class Product(models.Model):
     stock  = models.PositiveIntegerField(default=1)
     available = models.BooleanField(default=True)
     unit = models.CharField(blank=True,max_length=50)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="products")
     rating = models.FloatField(default=0,validators=[MinValueValidator(0),MaxValueValidator(5)])
+    specification = RichTextField(blank=True,null=True)
 
     created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True) 
@@ -56,7 +63,11 @@ class Product(models.Model):
             discount = Decimal(1) - Decimal(self.discount_percentage) / Decimal(100)
             return self.price * discount
         return self.price
-        
+
+    def get_ratings(self):
+        return round(self.rating/5,2)
+
+
     def __str__(self):
         return self.name
     

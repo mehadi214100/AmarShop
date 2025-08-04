@@ -1,6 +1,47 @@
 .bg-secondary,.btn-secondary{
-    background-color: #ff5500 !important;
+    background-color: #ff6a00 !important;
 }
 .bg-footer{
     background-color: #12225B;
+}
+.text-secondary{
+    color: #ff6a00 !important;
+}
+.hover-secondary:hover {
+    color: #ff6a00 !important; 
+    transition: 0.3s;
+}
+
+.btn-blue{
+    background-color: #12225b !important;
+    color: white;
+    font-weight: 700;
+}
+.img-sm {
+max-width: 100px;
+max-height: 100px;
+object-fit: cover;
+transition: transform 0.3s ease;
+}
+
+.zoom-on-hover:hover {
+transform: scale(1.2);
+z-index: 1;
+}
+
+.image-container {
+width: 100px;
+height: 100px;
+overflow: hidden;
+}
+
+.tag{
+    display: inline-block;
+    padding: 3px 7px;
+    background: #f2f2f2;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    margin-top: 4px;
+    margin-right: 2px;
+    font-size: 85%;
 }

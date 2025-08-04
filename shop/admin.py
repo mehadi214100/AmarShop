@@ -4,7 +4,7 @@ from .models import Category, Product, ProductImage, Review, FlashSale
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'created_at')
+    list_display = ('name', 'is_popular', 'created_at')
     prepopulated_fields = {"slug": ("name",)}  
     search_fields = ('name',)
     list_filter = ('created_at',)

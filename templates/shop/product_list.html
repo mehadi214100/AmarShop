@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<!-- Horizontal Filter Bar with Action Buttons -->
+<div class="container-fluid bg-white py-3 mb-4 border-bottom">
+  <div class="row g-3 align-items-center">
+    
+    <!-- Category Filter -->
+    <div class="col-md-3">
+      <label class="form-label small mb-1">Category</label>
+      <select class="form-select form-select-sm">
+        <option selected>All Categories</option>
+        <option>Electronics</option>
+        <option>Fashion</option>
+        <option>Home & Kitchen</option>
+        <option>Sports</option>
+        <option>Beauty</option>
+      </select>
+    </div>
+    
+    <!-- Price Filter -->
+    <div class="col-md-3">
+      <label class="form-label small mb-1">Price Range</label>
+      <div class="input-group input-group-sm">
+        <span class="input-group-text">$</span>
+        <input type="number" class="form-control" placeholder="Min" min="0">
+        <span class="input-group-text">to</span>
+        <input type="number" class="form-control" placeholder="Max">
+      </div>
+    </div>
+    
+    <!-- Rating Filter -->
+    <div class="col-md-2">
+      <label class="form-label small mb-1">Rating</label>
+      <select class="form-select form-select-sm">
+        <option selected>All Ratings</option>
+        <option value="5">★★★★★ (5 Stars)</option>
+        <option value="4">★★★★☆ (4+ Stars)</option>
+        <option value="3">★★★☆☆ (3+ Stars)</option>
+        <option value="2">★★☆☆☆ (2+ Stars)</option>
+      </select>
+    </div>
+    
+    <!-- Stock Filter -->
+    <div class="col-md-2">
+        <label class="form-label small mb-1">Availability</label>
+        <div class="form-check form-switch">
+            <input class="form-check-input bg-secondary border-0" type="checkbox" id="stockFilter" checked>
+            <label class="form-check-label" for="stockFilter">In Stock</label>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="col-md-2 d-flex align-items-end gap-2">
+      <button class="btn btn-secondary btn-sm flex-grow-1 border-0">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
+      <button class="btn btn-outline-danger btn-sm">
+        Clear
+      </button>
+    </div>
+    
+  </div>
+</div>
+    
+
+<!-- Results Header -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+    <div class="mb-3 mb-md-0">
+        <h5 class="mb-0">128 Products Found</h5>
+        <small class="text-muted">In Smartphones category</small>
+    </div>
+    
+    <div class="d-flex align-items-center">
+        <div class="me-3">
+            <label class="form-label me-2">Sort by:</label>
+            <select class="form-select form-select-sm" style="width: 160px;">
+                <option>Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest Arrivals</option>
+                <option>Best Ratings</option>
+            </select>
+        </div>
+        
+        <div class="btn-group shadow-sm" role="group">
+            <button type="button" class="btn btn-light active" data-bs-toggle="tooltip" title="Grid View">
+                <i class="fas fa-th"></i>
+            </button>
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="List View">
+                <i class="fas fa-list-ul"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    {% for product in products  %}
+
+<div class="col-md-3 mt-2">
+    <figure class="card card-product-grid h-100 d-flex flex-column">
+        <div class="img-wrap"> 
+            <img src="{{ product.images.first.image.url }}" class="img-fluid">
+        </div> <!-- img-wrap.// -->
+
+        <figcaption class="info-wrap flex-grow-1 d-flex flex-column">
+            <a href="#" class="title mb-2 d-block text-decoration-none fw-medium" style="min-height: 3.5rem; overflow: hidden;">
+                {{ product.name|truncatewords:8 }}
+            </a>
+
+            <div class="price-wrap fw-bold">
+                
+                {% if product.discount_percentage %}
+                    <div class="">
+                        Price:
+                        <del><span class="price  mx-2"> {{product.price}}tk </span> </del>
+                        <span class="price text-danger">{{product.discounted_price}}tk</span> 
+                    </div>
+                {% else %}
+                 <span class="price">Price : {{product.price}}tk</span> 
+                {% endif %}
+            </div> <!-- price-wrap.// -->
+
+            <p class="mb-2 text-success fw-small">Stock left : <small>{{product.stock}} only</small></p>
+            <hr>
+
+            <p class="mb-3">
+                <span class="badge bg-success"><i class="fa fa-check"></i> Verified</span> 
+                <span class="badge bg-dark">{{product.get_ratings}} Raings</span>
+                <span class="badge bg-dark">{{product.product_reviews.count}} Reviews</span> 
+            </p>
+
+            <div class="mt-auto">
+                <a href="#" class="btn btn-sm btn-secondary w-100 border-0">Add to Cart</a>
+            </div>
+        </figcaption>
+    </figure>
+</div> <!-- col.// -->
+
+
+
+    {% endfor %}
+</div> <!-- row end.// -->
+
+<nav class="mb-4" aria-label="Page navigation sample">
+	<ul class="pagination">
+		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+		<li class="page-item active"><a class="page-link" href="#">1</a></li>
+		<li class="page-item"><a class="page-link" href="#">2</a></li>
+		<li class="page-item"><a class="page-link" href="#">3</a></li>
+		<li class="page-item"><a class="page-link" href="#">4</a></li>
+		<li class="page-item"><a class="page-link" href="#">5</a></li>
+		<li class="page-item"><a class="page-link" href="#">Next</a></li>
+	</ul>
+</nav>
+
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- ========================= SECTION SUBSCRIBE  ========================= -->
+<section class="padding-y-lg bg-light border-top">
+<div class="container">
+	<p class="pb-2 text-center">Delivering the latest product trends and industry news straight to your inbox</p>
+
+	<div class="row justify-content-md-center">
+		<div class="col-lg-4 col-sm-6">
+			<form class="row g-2">
+				<div class="col-8">
+					<input class="form-control" placeholder="Your Email" type="email">
+				</div> <!-- col.// -->
+				<div class="col-4">
+					<button type="submit" class="btn btn-block btn-warning"><i class="fa fa-envelope"></i> Subscribe</button>
+				</div> <!-- col.// -->
+			</form>
+			<small class="form-text">We'll never share your email address with a third-party.</small>
+		</div> <!-- col-md-6.// -->
+	</div>
+</div>
+</section>
+<!-- ========================= SECTION SUBSCRIBE END// ========================= -->
+
+{% endblock content %}
