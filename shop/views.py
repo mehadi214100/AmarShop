@@ -12,9 +12,26 @@ def home(request):
     return render(request,"shop/home.html",context)
 
 
-def all_products(request):
-    products = Product.objects.select_related('category').filter(available=True,category__is_available=True)
+def all_products(request,category=None):
+    if category:
+        products = Product.objects.select_related('category').filter(available=True,category__is_available=True,category__slug=category)
+    else:
+        products = Product.objects.select_related('category').filter(available=True,category__is_available=True)
+
     context = {
         "products":products,
     }
     return render(request,"shop/product_list.html",context)
+
+
+def product_details(request,product_name):
+    product = Product.objects.get(slug = product_name)
+    cat = product.category
+   
+    related_products = Product.objects.all().filter(category =  cat)
+   
+    context = {
+        "product":product,
+        "related_products":related_products,
+    }
+    return render(request,"shop/product_details.html",context)

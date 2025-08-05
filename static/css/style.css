@@ -17,6 +17,10 @@
     color: white;
     font-weight: 700;
 }
+.btn-blue:hover{
+    color: white !important;
+    background-color: #0a1230 !important;
+}
 .img-sm {
 max-width: 100px;
 max-height: 100px;

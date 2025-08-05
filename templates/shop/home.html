@@ -14,7 +14,7 @@
 			<h6 class="title-category">MY MARKETS <i class="d-md-none icon fa fa-chevron-down"></i></h6>
 			<ul class="menu-category">
 				{% for category in categories|slice:":6" %}
-				<li><a class="text-decoration-none" href="#">{{category.name}}</a></li>
+				<li><a class="text-decoration-none" href="{% url "category_products" category.slug %}">{{category.name}}</a></li>
 				{% endfor %}
 				{% if categories|length > 6 %}
 					<li class="has-submenu"><a href="#">More items</a>
@@ -58,7 +58,7 @@
 			<div class="card-banner border-bottom">
 			  <div class="py-3" style="width:80%">
 			    <h6 class="card-title">{{category.name}}</h6>
-			    <a href="#" class="btn btn-blue btn-sm border-0"> See All  </a>
+			    <a href="{% url "category_products" category.slug %}" class="btn btn-blue btn-sm border-0"> See All  </a>
 			  </div> 
 			  <img src="{{category.image.url}}" height="80" class="img-bg">
 			</div>
@@ -165,7 +165,7 @@
 	<div class="home-category-banner bg-light-orange">
 		<h5 class="title">Best {{category.name}} for you </h5>
 		<p>{{category.description}}</p>
-		<a href="#" class="btn btn-outline-danger rounded-pill fw-medium">See All</a>
+		<a href="{% url "category_products" category.slug %}" class="btn btn-outline-danger rounded-pill fw-medium">See All</a>
 		<img src="{{category.image.url}}" class="img-bg">
 	</div>
 
@@ -182,7 +182,7 @@
 				<p class="text-muted fw-medium"><span>৳</span> {{ product.price }}</p>
 			</div>
 			<div class="mt-auto">
-				<a href="#" class="btn btn-sm btn-secondary border-0 w-20">Buy Now</a>
+				<a href="{% url "product_details" product.slug %}" class="btn btn-sm btn-secondary border-0 w-20">Buy Now</a>
 			</div>
 			</div>
 		</div>
@@ -290,7 +290,7 @@
 			{% endif %}
 
 			<div class="mt-auto">
-				<a href="#" class="btn btn-sm btn-secondary border-0 w-100">Buy Now</a>
+				<a href="{% url "product_details" product.slug %}" class="btn btn-sm btn-secondary border-0 w-100">Buy Now</a>
 			</div>
 			</figcaption>
 		</div>
