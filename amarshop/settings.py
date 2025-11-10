@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
     'ckeditor',
+    'cart',
 ]
 
 MIDDLEWARE = [
