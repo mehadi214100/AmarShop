@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'shop',
     'cart',
     'profileApp',
+    'order',
     'ckeditor',
 ]
 

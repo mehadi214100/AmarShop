@@ -48,7 +48,6 @@ class Product(models.Model):
 
     def discounted_price(self):
         now = timezone.now()
-        # 1. Check for active flash sale
         flash_sale = self.flash_sales.filter(
             is_active=True,
             start_time__lte=now,
@@ -57,12 +56,12 @@ class Product(models.Model):
 
         if flash_sale:
             discount = Decimal(1) - Decimal(flash_sale.discount_percentage) / Decimal(100)
-            return self.price * discount
+            return round(self.price * discount,2)
         
         if self.discount_percentage:
             discount = Decimal(1) - Decimal(self.discount_percentage) / Decimal(100)
-            return self.price * discount
-        return self.price
+            return round(self.price * discount,2)
+        return round(self.price,2)
 
     def get_ratings(self):
         return round(self.rating/5,2)
