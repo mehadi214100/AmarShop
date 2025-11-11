@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from shop.models import Product
-from .models import Coupon,CartItem
+from .models import Coupon,CartItem,Wishlist
 from django.contrib import messages
 
 def viewcart(request):
@@ -113,4 +113,19 @@ def remove_cart(request,item_id):
     item = CartItem.objects.get(user=user,id=item_id)
     item.delete()
     return redirect('cart')
+
+
+def addwishlist(request,item_id):
+    user = request.user
+    cart_item  = CartItem.objects.get(user=user,id=item_id)
+    product = cart_item.product
+    cart_item ,created = Wishlist.objects.get_or_create(user=user,product=product)
+
+    if created:
+        messages.success(request, f"{product.name} added to your wishlist.")
+    else:
+        messages.info(request, f"{product.name} is already in your wishlist.")
+
+    return redirect('cart')
+
 

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
     'cart',
+    'profileApp',
     'ckeditor',
 ]
 
@@ -94,6 +95,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+UNFOLD = {
+    "SITE_TITLE": "AmarShop Admin",
+    "SITE_HEADER": "AmarShop Dashboard",
+    "STYLES": [
+        "/static/css/admin_overrides.css",
+    ],
+}
+
 
 
 # Internationalization

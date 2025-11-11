@@ -1,0 +1,35 @@
+{% extends "profile/profile_base.html" %}
+{% load static %}
+    {% block profileContent %}
+    
+    	<main class="col-md-9">
+
+		<article class="card">
+			<div class="card-body">
+                <div class="row">
+                    {% for wishlist in products %}
+                        <div class="col-md-6">
+                            <figure class="itemside mb-4">
+                                <div class="aside"><img src="{{wishlist.product.images.all.first.image.url}}" class="border img-md"></div>
+                                <figcaption class="info">
+                                    <a href="{% url "product_details" wishlist.product.slug %}" class="title">{{wishlist.product.name}}</a>
+                                    <p class="price mb-2">BDT {{wishlist.product.discounted_price}}</p>
+                                    <a href="{% url "add_cart" wishlist.product.id %}" class="btn  btn-sm" style="outline:none;color:white;background:#0c163b"> Add to cart </a>
+                                    <a href="{% url "removeWishlist" wishlist.id %}" class="btn btn-danger btn-sm" data-toggle="tooltip" title="" data-original-title="Remove from wishlist"> <i class="fa fa-times"></i> </a>
+                                </figcaption>
+                            </figure>
+                        </div> <!-- col.// -->
+
+                        {% endfor %}
+                        
+                    </div> <!-- row .//  -->
+			</div> <!-- card-body.// -->
+		</article>
+
+
+	</main> <!-- col.// -->
+
+
+
+    {% endblock %}
+	

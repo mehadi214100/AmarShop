@@ -37,15 +37,9 @@
                     </a>
                 </div>
                 <div class="col-xl-6 col-lg-7 col-md-6">
-                    <form action="#" class="search-header">
+                    <form method="GET" action="{% url "search_product" %}" class="search-header">
                         <div class="input-group">
-                            <select class="form-select border-end-0" name="category_name">
-                                <option value="">All type</option>
-                                <option value="codex">Special</option>
-                                <option value="comments">Only best</option>
-                                <option value="content">Latest</option>
-                            </select>
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input name="q" type="text" class="form-control" placeholder="Search" value="{{request.GET.q}}">
                             <button class="btn btn-secondary  border-0" type="submit">
                                 <i class="fa fa-search font-weight-bold"></i> Search
                             </button>
@@ -64,7 +58,7 @@
                         {% if user.is_authenticated %}
 
                             <div class="mx-2">
-                            <a href="#" class="d-flex align-items-center text-decoration-none">
+                            <a href="{% url "profile" %}" class="d-flex align-items-center text-decoration-none">
                                 <i class="fa-solid fa-user fs-4 text-secondary"></i>
                                 <small class="ms-1 d-none d-md-inline text-secondary">Profile</small>
                             </a>

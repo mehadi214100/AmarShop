@@ -59,9 +59,9 @@ choices = (
     ('male','Male'),
     ('female','Female'),
     ('others','Others'),
-) 
+)
 class userProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="userProfile")
     city = models.CharField(blank=True,null=True,max_length=150)
     postcode = models.CharField(blank=True,null=True,max_length=150)
     gender = models.CharField(choices=choices,max_length=50,default='male')

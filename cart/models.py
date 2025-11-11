@@ -40,3 +40,9 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+    
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_wishlist")
+    product = models.ForeignKey(Product,related_name="products_wishlist",on_delete=models.CASCADE)

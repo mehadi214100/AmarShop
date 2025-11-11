@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-pagetop bg-gray">
+<div class="container">
+	<h2 class="title-page">My Account</h2>
+</div> <!-- container //  -->
+</section>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+<aside class="col-md-3">
+    <nav class="list-group">
+        <a class="list-group-item {% if request.resolver_match.url_name == 'profile' %}active{% endif %}"
+           href="{% url 'profile' %}">
+            Account overview
+        </a>
+
+        <a class="list-group-item"
+           href="page-profile-orders.html">
+           My Orders
+        </a>
+
+        <a class="list-group-item {% if request.resolver_match.url_name == 'viewWishlist' %}active{% endif %}"
+           href="{% url "viewWishlist" %}">
+           My wishlist
+        </a>
+
+
+        <a class="list-group-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}"
+           href="{% url 'settings' %}">
+            Settings
+        </a>
+
+        <a class="list-group-item"
+           href="page-index-1.html">
+           Log out
+        </a>
+    </nav>
+</aside>
+
+	{% block profileContent %}
+    {% endblock %}
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}

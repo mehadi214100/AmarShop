@@ -62,8 +62,8 @@
 
 <div class="mb-3 mt-5"> 
     {% if product.discount_percentage %}
-        <var class="price h4">BDT {{product.price}}</var> 
-        <span class="text-muted text-decoration-line-through">BDT {{product.discounted_price}}</span> 
+        <var class="price h4">BDT {{product.discounted_price}}</var> 
+        BDT <span class="text-muted text-decoration-line-through"> {{product.price}}</span> 
     {% else %}
         <var class="price h4">BDT {{product.price}}</var> 
     {% endif %}

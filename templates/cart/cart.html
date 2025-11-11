@@ -53,7 +53,7 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-end"> 
-	<a data-bs-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-bs-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
+	<a data-bs-original-title="Save to Wishlist" title="" id="addwishlist" href="{% url "addwishlist" item.id %}" class="btn btn-light" data-bs-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
 	<a href="{% url "remove_cart" item.id %}" class="btn btn-light"> Remove</a>
 	</td>
 </tr>
@@ -135,5 +135,8 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </div><!-- container // -->
 </section>
 <!-- ========================= SECTION  END// ========================= -->
+
+
+</script>
 
 {% endblock content %}

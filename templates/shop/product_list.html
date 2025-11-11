@@ -71,8 +71,11 @@
 <!-- Results Header -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
     <div class="mb-3 mb-md-0">
-        <h5 class="mb-0">128 Products Found</h5>
-        <small class="text-muted">In Smartphones category</small>
+      {% if products.count %}
+        <h5 class="mb-0">{{products.count}} Products Found</h5>
+      {% else %}
+        <h5 class="mb-0">No Products Found</h5>
+      {% endif %}
     </div>
     
     <div class="d-flex align-items-center">
@@ -109,7 +112,7 @@
         </div> <!-- img-wrap.// -->
 
         <figcaption class="info-wrap flex-grow-1 d-flex flex-column">
-            <a href="#" class="title mb-2 d-block text-decoration-none fw-medium" style="min-height: 3.5rem; overflow: hidden;">
+            <a href="{% url "product_details" product.slug %}" class="title mb-2 d-block text-decoration-none fw-medium" style="min-height: 3.5rem; overflow: hidden;">
                 {{ product.name|truncatewords:8 }}
             </a>
 
@@ -136,7 +139,7 @@
             </p>
 
             <div class="mt-auto">
-                <a href="#" class="btn btn-sm btn-secondary w-100 border-0">Add to Cart</a>
+                <a href="{% url "product_details" product.slug %}" class="btn btn-sm btn-secondary w-100 border-0">Buy Now</a>
             </div>
         </figcaption>
     </figure>

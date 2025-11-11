@@ -35,3 +35,13 @@ def product_details(request,product_name):
         "related_products":related_products,
     }
     return render(request,"shop/product_details.html",context)
+
+
+def search_product(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(name__icontains=query) if query else []
+    
+    context = {
+        "products":products,
+    }
+    return render(request,"shop/product_list.html",context)
