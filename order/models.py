@@ -34,4 +34,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def get_cost(self):
-        return self.quantity * self.price
+        quantity = self.quantity or 0
+        price = self.price or 0
+
+        return quantity*price

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'profileApp',
     'order',
     'ckeditor',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,12 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')        
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')    
+
+
+SSLCZ_STORE_ID = 'amars69142eb960bc8'             
+SSLCZ_STORE_PASS = 'amars69142eb960bc8@ssl'      
+SSLCZ_IS_SANDBOX = True   
+
+SSLCZ_SUCCESS_URL = '/order/payment-success/'
+SSLCZ_FAIL_URL = '/order/payment-fail/'
+SSLCZ_CANCEL_URL = '/order/payment-cancel/'
