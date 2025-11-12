@@ -7,7 +7,7 @@ from sslcommerz_lib import SSLCOMMERZ
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
 import uuid
-
+from django.contrib.auth import login
 
 def create_order(request):
     cart_items = CartItem.objects.filter(user=request.user)
@@ -47,7 +47,6 @@ def create_order(request):
             )
 
         cart_items.delete()
-        messages.success(request, "Order created successfully! Redirecting to payment...")
         return redirect(f'/order/payment-process/{order.id}/')
 
     return render(request, 'orders/checkout.html', {
@@ -124,6 +123,10 @@ def payment_success(request):
                 order.status = 'Paid'
                 order.paid = True
                 order.save()
+               
+                user = order.user
+                if user:
+                    login(request, user)  # logs in the user automatically
             return render(request, 'payment/payment_success.html', {'order': order})
         else:
             return render(request, 'payment/payment_fail.html', {'msg': 'Invalid transaction'})

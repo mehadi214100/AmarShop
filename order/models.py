@@ -6,6 +6,7 @@ class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
         ('Paid', 'Paid'),
+        ('Delivered ','Delivered '),
         ('Cancelled', 'Cancelled'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)

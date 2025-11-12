@@ -35,28 +35,23 @@
 				<article class="card-group card-stat">
 					<figure class="card bg">
 						<div class="p-3">
-							 <h4 class="title">38</h4>
+							 <h4 class="title">{{totalOrder}}</h4>
 							<span>Orders</span>
 						</div>
 					</figure>
 					<figure class="card bg">
 						<div class="p-3">
-							 <h4 class="title">5</h4>
+							 <h4 class="title">{{totalwishlist}}</h4>
 							<span>Wishlists</span>
 						</div>
 					</figure>
 					<figure class="card bg">
 						<div class="p-3">
-							 <h4 class="title">12</h4>
-							<span>Awaiting delivery</span>
+							 <h4 class="title">{{total_order_amount}}</h4>
+							<span>Total Order Amount</span>
 						</div>
 					</figure>
-					<figure class="card bg">
-						<div class="p-3">
-							 <h4 class="title">50</h4>
-							<span>Delivered items</span>
-						</div>
-					</figure>
+	
 				</article>
 				
 
@@ -66,43 +61,25 @@
 		<article class="card  mb-3">
 			<div class="card-body">
 				<h5 class="card-title mb-4">Recent orders </h5>	
-
 				<div class="row">
-				<div class="col-md-6">
-					<figure class="itemside  mb-3">
-						<div class="aside"><img src="images/items/1.jpg" class="border img-sm"></div>
-						<figcaption class="info">
-							<time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-							<p>Great book name goes here </p>
-							<span class="text-success">Order confirmed </span>
-						</figcaption>
-					</figure>
-				</div> <!-- col.// -->
-				<div class="col-md-6">
-					<figure class="itemside  mb-3">
-						<div class="aside"><img src="images/items/2.jpg" class="border img-sm"></div>
-						<figcaption class="info">
-							<time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-							<p>How to be rich</p>
-							<span class="text-success">Departured</span>
-						</figcaption>
-					</figure>
-				</div> <!-- col.// -->
-				<div class="col-md-6">
-					<figure class="itemside mb-3">
-						<div class="aside"><img src="images/items/3.jpg" class="border img-sm"></div>
-						<figcaption class="info">
-							<time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-							<p>Harry Potter book </p>
-							<span class="text-success">Shipped  </span>
-						</figcaption>
-					</figure>
-				</div> <!-- col.// -->
-			</div> <!-- row.// -->
+					{% for item in orders.first.items.all %}
+					<div class="col-md-6">
+						<figure class="itemside  mb-3">
+							<div class="aside"><img src="{{item.product.images.all.first.image.url}}" class="border img-sm"></div>
+							<figcaption class="info">
+								<time class="text-muted"><i class="fa fa-calendar-alt"></i> {{orders.first.created_at}}</time>
+								<p>{{item.product.name}} </p>
+								
+							</figcaption>
+						</figure>
+					</div> 
+				{% endfor %}
+			
+			</div> 
 
-			<a href="#" class="btn btn-outline-primary btn-block"> See all orders <i class="fa fa-chevron-down"></i>  </a>
-			</div> <!-- card-body .// -->
-		</article> <!-- card.// -->
+			<a href="{% url "myorders" %}" class="btn btn-outline-primary btn-block w-100 mt-3"> See all orders <i class="fa fa-chevron-down"></i>  </a>
+			</div> 
+		</article> 
 
 	</main> <!-- col.// -->
     {% endblock profileContent %}

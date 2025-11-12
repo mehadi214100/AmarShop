@@ -1,0 +1,60 @@
+{% extends "profile/profile_base.html" %}
+{% load static %}
+    {% block profileContent %}
+
+
+    <main class="col-md-9">
+		{% for order in orders %}
+		<article class="card order-item mb-4">
+		<header class="card-header">
+			<strong class="d-inline-block me-4">Order ID: {{order.id}}</strong>
+			<span>Order Date: {{order.created_at}}</span>
+		</header>
+		<div class="card-body">
+			<div class="row"> 
+				<div class="col-md-8">
+					<h6 class="text-muted">Delivery to</h6>
+					<p> {{order.full_name}} <br>  
+					Phone: {{order.phone}} Email: {{order.email}} <br>
+    
+			    	Location: {{order.address}} | Post Code : {{order.postal_code}}
+			 		</p>
+				</div>
+				<div class="col-md-4">
+					<h6 class="text-muted">Payment</h6>
+					Status:
+					<span class="text-{% if order.status == 'Paid' %}success{% else %}danger{% endif %}">
+						
+					    {{order.status}} 
+					</span>
+					<br>
+					 <span class="b">Total:  BDT {{order.total_price}} </span>
+					</p>
+				</div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		<div class="table-responsive">
+		<table class="table table-hover">
+			<tbody>
+			{% for item in order.items.all %}
+			<tr>
+				<td width="65">
+					<img src="{{item.product.images.all.first.image.url }}" class="img-xs border">
+				</td>
+				<td> 
+					<p class="title mb-0">{{item.product.name}} </p>
+					<var class="price text-muted">BDT {{item.product.price}}</var>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody></table>
+		</div> <!-- table-responsive .end// -->
+		</article> <!-- card order-item .// -->
+	{% endfor %}
+
+	</main> <!-- col.// -->
+
+
+    {% endblock %}
+
+	

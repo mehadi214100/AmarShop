@@ -1,9 +1,179 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container text-center my-5">
-  <h2 class="text-success fw-bold">✅ Payment Successful!</h2>
-  <p>Your order ID: {{ order.id }}</p>
-  <p>Transaction ID: {{ order.transaction_id }}</p>
-  <a href="/" class="btn btn-primary mt-3">Continue Shopping</a>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <!-- Success Card -->
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body p-5 text-center">
+          <!-- Success Icon -->
+          <div class="mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10" style="width: 80px; height: 80px;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-success">
+                <path d="M12 0a12 12 0 1012 12A12 12 0 0012 0zm6.2 8.8l-6.5 7.2a1 1 0 01-1.4 0l-3.5-3.5a1 1 0 011.4-1.4l2.8 2.8 5.8-6.4a1 1 0 011.4 1.4z"/>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Success Message -->
+          <h2 class="card-title fw-bold text-success mb-3">Payment Successful!</h2>
+          <p class="text-muted mb-4">Thank you for your purchase. Your order has been confirmed and will be processed shortly.</p>
+          
+          <!-- Order Details -->
+          <div class="bg-light rounded-3 p-4 mb-4">
+            <div class="row text-start">
+              <div class="col-6 mb-2">
+                <strong class="text-muted">Order ID:</strong>
+              </div>
+              <div class="col-6 mb-2 text-end">
+                <span class="fw-semibold text-dark">#{{ order.id }}</span>
+              </div>
+              <div class="col-6 mb-2">
+                <strong class="text-muted">Transaction ID:</strong>
+              </div>
+              <div class="col-6 mb-2 text-end">
+                <span class="fw-semibold text-dark">{{ order.transaction_id }}</span>
+              </div>
+              <div class="col-6">
+                <strong class="text-muted">Date:</strong>
+              </div>
+              <div class="col-6 text-end">
+                <span class="fw-semibold text-dark">{{ order.created_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="d-grid gap-2 d-md-flex justify-content-center">
+            <a href="{% url "all_products" %}" class="btn btn-primary px-4 py-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+                <path d="M22 9h-4.8l-1.2-1.5-1.2 1.5h-4.8l-1.2-1.5-1.2 1.5h-4.8v12h18v-12zm-9 9h-2v-6h2v6zm4 0h-2v-6h2v6zm4-9v2h-18v-2h4.8l1.2 1.5 1.2-1.5h4.8l1.2 1.5 1.2-1.5h4.8z"/>
+              </svg>
+              Continue Shopping
+            </a>
+          </div>
+          
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </div>
+
+<style>
+.card {
+  transition: transform 0.2s ease-in-out;
+  border: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.bg-opacity-10 {
+  background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+.btn-outline-secondary {
+  border: 1px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.text-success {
+  color: #198754 !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.rounded-3 {
+  border-radius: 0.75rem !important;
+}
+
+/* Animation for success icon */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.d-inline-flex {
+  animation: scaleIn 0.6s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 2rem 1.5rem !important;
+  }
+  
+  .d-md-flex {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+</style>
+
+<script>
+// Add some interactive animations
+document.addEventListener('DOMContentLoaded', function() {
+  const card = document.querySelector('.card');
+  
+  // Add entrance animation
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(20px)';
+  
+  setTimeout(() => {
+    card.style.transition = 'all 0.6s ease';
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
+  }, 100);
+  
+  // Add hover sound effect (optional)
+  card.addEventListener('mouseenter', function() {
+    // You could add a subtle sound effect here if desired
+  });
+});
+</script>
 {% endblock %}

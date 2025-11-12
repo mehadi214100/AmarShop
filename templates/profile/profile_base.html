@@ -21,8 +21,8 @@
             Account overview
         </a>
 
-        <a class="list-group-item"
-           href="page-profile-orders.html">
+         <a class="list-group-item {% if request.resolver_match.url_name == 'myorders' %}active{% endif %}"
+           href="{% url "myorders" %}">
            My Orders
         </a>
 
