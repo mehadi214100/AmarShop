@@ -9,16 +9,18 @@
 <div class="container-fluid bg-white py-3 mb-4 border-bottom">
   <div class="row g-3 align-items-center">
     
+    
+    <form method="GET" class="row g-3 align-items-center mb-4">
     <!-- Category Filter -->
     <div class="col-md-3">
       <label class="form-label small mb-1">Category</label>
-      <select class="form-select form-select-sm">
-        <option selected>All Categories</option>
-        <option>Electronics</option>
-        <option>Fashion</option>
-        <option>Home & Kitchen</option>
-        <option>Sports</option>
-        <option>Beauty</option>
+      <select name="category" class="form-select form-select-sm">
+        <option value="all">All Categories</option>
+        {% for category in categories %}
+        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
+            {{ category.name }}
+        </option>
+        {% endfor %}
       </select>
     </div>
     
@@ -27,45 +29,34 @@
       <label class="form-label small mb-1">Price Range</label>
       <div class="input-group input-group-sm">
         <span class="input-group-text">$</span>
-        <input type="number" class="form-control" placeholder="Min" min="0">
+        <input type="number" name="price_min" class="form-control" placeholder="Min" min="0" value="{{ request.GET.price_min }}">
         <span class="input-group-text">to</span>
-        <input type="number" class="form-control" placeholder="Max">
+        <input type="number" name="price_max" class="form-control" placeholder="Max" value="{{ request.GET.price_max }}">
       </div>
     </div>
     
-    <!-- Rating Filter -->
+    <!-- Sorting -->
     <div class="col-md-2">
-      <label class="form-label small mb-1">Rating</label>
-      <select class="form-select form-select-sm">
-        <option selected>All Ratings</option>
-        <option value="5">★★★★★ (5 Stars)</option>
-        <option value="4">★★★★☆ (4+ Stars)</option>
-        <option value="3">★★★☆☆ (3+ Stars)</option>
-        <option value="2">★★☆☆☆ (2+ Stars)</option>
+      <label class="form-label small mb-1">Sorting</label>
+      <select name="sort_by" class="form-select form-select-sm">
+        <option value="">Default</option>
+        <option value="low_to_high" {% if request.GET.sort_by == "low_to_high" %}selected{% endif %}>Price: Low to High</option>
+        <option value="high_to_low" {% if request.GET.sort_by == "high_to_low" %}selected{% endif %}>Price: High to Low</option>
+        <option value="new_arrivals" {% if request.GET.sort_by == "new_arrivals" %}selected{% endif %}>Newest Arrivals</option>
       </select>
     </div>
-    
-    <!-- Stock Filter -->
-    <div class="col-md-2">
-        <label class="form-label small mb-1">Availability</label>
-        <div class="form-check form-switch">
-            <input class="form-check-input bg-secondary border-0" type="checkbox" id="stockFilter" checked>
-            <label class="form-check-label" for="stockFilter">In Stock</label>
-        </div>
+
+    <div class="col-md-2 align-self-end">
+        <button type="submit" class="btn btn-secondary btn-sm w-100 border-0">
+            <i class="bi bi-funnel"></i> Filter
+        </button>
     </div>
-    
-    <!-- Action Buttons -->
-    <div class="col-md-2 d-flex align-items-end gap-2">
-      <button class="btn btn-secondary btn-sm flex-grow-1 border-0">
-        <i class="bi bi-funnel"></i> Filter
-      </button>
-      <button class="btn btn-outline-danger btn-sm">
-        Clear
-      </button>
-    </div>
+</form>
+
+
     
   </div>
-</div>
+
     
 
 <!-- Results Header -->
@@ -77,28 +68,7 @@
         <h5 class="mb-0">No Products Found</h5>
       {% endif %}
     </div>
-    
-    <div class="d-flex align-items-center">
-        <div class="me-3">
-            <label class="form-label me-2">Sort by:</label>
-            <select class="form-select form-select-sm" style="width: 160px;">
-                <option>Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest Arrivals</option>
-                <option>Best Ratings</option>
-            </select>
-        </div>
-        
-        <div class="btn-group shadow-sm" role="group">
-            <button type="button" class="btn btn-light active" data-bs-toggle="tooltip" title="Grid View">
-                <i class="fas fa-th"></i>
-            </button>
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="List View">
-                <i class="fas fa-list-ul"></i>
-            </button>
-        </div>
-    </div>
+
 </div>
 
 
@@ -128,15 +98,10 @@
                  <span class="price">Price : {{product.price}}tk</span> 
                 {% endif %}
             </div> <!-- price-wrap.// -->
-
-            <p class="mb-2 text-success fw-small">Stock left : <small>{{product.stock}} only</small></p>
-            <hr>
-
-            <p class="mb-3">
-                <span class="badge bg-success"><i class="fa fa-check"></i> Verified</span> 
-                <span class="badge bg-dark">{{product.get_ratings}} Raings</span>
-                <span class="badge bg-dark">{{product.product_reviews.count}} Reviews</span> 
-            </p>
+            {% if product.discount_percentage > 0 %}
+            <p class="mb-1 text-info fw-bold">{{product.discount_percentage}}% <small> Discount</small></p>
+            {% endif %}
+         
 
             <div class="mt-auto">
                 <a href="{% url "product_details" product.slug %}" class="btn btn-sm btn-secondary w-100 border-0">Buy Now</a>
@@ -146,21 +111,8 @@
 </div> <!-- col.// -->
 
 
-
     {% endfor %}
 </div> <!-- row end.// -->
-
-<nav class="mb-4" aria-label="Page navigation sample">
-	<ul class="pagination">
-		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-		<li class="page-item active"><a class="page-link" href="#">1</a></li>
-		<li class="page-item"><a class="page-link" href="#">2</a></li>
-		<li class="page-item"><a class="page-link" href="#">3</a></li>
-		<li class="page-item"><a class="page-link" href="#">4</a></li>
-		<li class="page-item"><a class="page-link" href="#">5</a></li>
-		<li class="page-item"><a class="page-link" href="#">Next</a></li>
-	</ul>
-</nav>
 
 
 </div> <!-- container .//  -->
