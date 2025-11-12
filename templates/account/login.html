@@ -13,16 +13,7 @@
                         
                         <form method="POST" class="needs-validation" novalidate>
                             {% csrf_token %}
-                            
-                            <!-- Google Sign-in Button -->
-                            <a href="#" class="btn btn-outline-danger d-flex align-items-center justify-content-center mb-4 w-100">
-                                <i class="fab fa-google me-2"></i>Sign in with Google
-                            </a>
-                            
-                            <div class="text-center mb-4 position-relative">
-                                <hr class="my-0">
-                                <span class="px-2 bg-white position-absolute top-50 start-50 translate-middle">or</span>
-                            </div>
+
                             
                             <!-- Email Input -->
                             <div class="mb-3">
@@ -42,11 +33,6 @@
                                 <div class="invalid-feedback">
                                     Please enter your password
                                 </div>
-                            </div>
-                            
-                            <!-- Forgot Password Link -->
-                            <div class="mb-3 text-end">
-                                <a href="#" class="text-decoration-none">Forgot password?</a>
                             </div>
                             
                             <!-- Submit Button -->

@@ -54,3 +54,12 @@ class FlashSaleAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'start_time', 'end_time')
     search_fields = ('name',)
     filter_horizontal = ('products',)
+
+
+
+from .models import CarouselBanner
+
+@admin.register(CarouselBanner)
+class CarouselBannerAdmin(admin.ModelAdmin):
+    list_display = ("title", "is_active", "order", "created_at")
+    list_editable = ("is_active", "order")

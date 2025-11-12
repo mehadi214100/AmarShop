@@ -104,6 +104,11 @@ UNFOLD = {
     "SITE_HEADER": "AmarShop Dashboard",
     "STYLES": [
         "/static/css/admin_overrides.css",
+        "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css",
+    ],
+    "SCRIPTS": [
+        "https://cdn.jsdelivr.net/npm/flatpickr",
+        "/static/js/flatpickr-init.js",
     ],
 }
 

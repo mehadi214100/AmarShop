@@ -20,43 +20,53 @@
 </thead>
 <tbody>
 	{% for item in cart_items %}
-<tr>
-	<td>
-		<figure class="itemside">
-			<div class="aside">
+<tr class="align-middle text-center text-md-start">
+  <td>
+    <div class="d-flex align-items-center flex-column flex-md-row">
+      <div class="me-md-3 mb-2 mb-md-0">
+        {% if item.product.images.all %}
+          <img src="{{ item.product.images.first.image.url }}" class="img-fluid rounded" style="width: 70px; height: 70px; object-fit: cover;">
+        {% else %}
+          <img src="https://ph-files.imgix.net/56c3fc40-81b9-4889-a5a1-cadd4f5ff6e3.png?auto=format" class="img-fluid rounded" style="width: 70px; height: 70px; object-fit: cover;">
+        {% endif %}
+      </div>
+      <div>
+        <a href="{% url 'product_details' item.product.slug %}" class="fw-semibold text-dark text-decoration-none d-block">
+          {{ item.product.name }}
+        </a>
+      </div>
+    </div>
+  </td>
 
-				{% if item.product.images.all %}
-					<img src="{{ item.product.images.first.image.url }}" class="img-sm">
-				{% else %}
-					<img src="https://ph-files.imgix.net/56c3fc40-81b9-4889-a5a1-cadd4f5ff6e3.png?auto=format" class="img-sm">
-				{% endif %}
+  <td>
+    <div class="d-flex justify-content-center justify-content-md-start align-items-center gap-2">
+      <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-outline-secondary btn-sm px-2">−</a>
+      <input type="text" class="form-control form-control-sm text-center" value="{{ item.quantity }}" style="width: 50px;" readonly>
+      <a href="{% url 'increase_quantity' item.id %}" class="btn btn-outline-secondary btn-sm px-2">+</a>
+    </div>
+  </td>
 
+  <td>
+    <div class="text-center text-md-start">
+      <div class="fw-bold">৳ {{ item.sub_total }}</div>
+      <small class="text-muted">৳ {{ item.product.discounted_price }} each</small>
+    </div>
+  </td>
 
-			</div>
-			<figcaption class="info">
-				<a href="{% url "product_details" item.product.slug %}" class="title text-dark mt-4">{{item.product.name}}</a>
-			</figcaption>
-		</figure>
-	</td>
-	<td> 
-		<div class="quantity-selector">
-			<a href="{% url 'decrease_quantity' item.id %}" class="decrease">-</a>
-			<input type="text" class="quantity" value="{{ item.quantity }}" readonly>
-			<a href="{% url 'increase_quantity' item.id %}" class="increase">+</a>
-		</div>
-
-	</td>
-	<td> 
-		<div class="price-wrap"> 
-			<var class="price">৳ {{item.sub_total}}</var> 
-			<small class="text-muted"> ৳ {{item.product.discounted_price}} each </small> 
-		</div> <!-- price-wrap .// -->
-	</td>
-	<td class="text-end"> 
-	<a data-bs-original-title="Save to Wishlist" title="" id="addwishlist" href="{% url "addwishlist" item.id %}" class="btn btn-light" data-bs-toggle="tooltip"> <i class="fa fa-heart"></i></a> 
-	<a href="{% url "remove_cart" item.id %}" class="btn btn-light"> Remove</a>
-	</td>
+  <td class="text-center text-md-end">
+    <div class="d-flex flex-column flex-md-row gap-2 justify-content-center justify-content-md-end">
+      <a href="{% url 'addwishlist' item.id %}" class="btn btn-outline-danger btn-sm">
+        <i class="fa fa-heart"></i>
+      </a>
+      <a href="{% url 'remove_cart' item.id %}" class="btn btn-outline-dark btn-sm">
+        Remove
+      </a>
+    </div>
+  </td>
 </tr>
+
+
+
 {% endfor %}
 </tbody>
 </table>

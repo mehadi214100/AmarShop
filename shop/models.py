@@ -52,7 +52,7 @@ class Product(models.Model):
             is_active=True,
             start_time__lte=now,
             end_time__gte=now
-        ).first()
+        ).order_by('-discount_percentage').first()
 
         if flash_sale:
             discount = Decimal(1) - Decimal(flash_sale.discount_percentage) / Decimal(100)
@@ -66,6 +66,15 @@ class Product(models.Model):
     def get_ratings(self):
         return round(self.rating/5,2)
 
+
+    @property
+    def active_flash_sale(self):
+        now = timezone.now()
+        return self.flash_sales.filter(
+            is_active=True,
+            start_time__lte=now,
+            end_time__gte=now
+        ).first()
 
     def __str__(self):
         return self.name
@@ -116,3 +125,22 @@ class FlashSale(models.Model):
     def is_live(self):
         now = timezone.now()
         return self.is_active and self.start_time <= now <= self.end_time
+    
+    def total_time(self):
+        time = self.end_time-self.start_time
+        return time 
+    
+
+
+class CarouselBanner(models.Model):
+    title = models.CharField(max_length=200, blank=True, null=True)
+    image = models.ImageField(upload_to="banners/")
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower = earlier)")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return self.title or f"Banner {self.id}"

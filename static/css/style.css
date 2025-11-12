@@ -99,3 +99,30 @@ overflow: hidden;
 .bg-gray{
     background: #e5e7ea;
 }
+
+
+
+
+.bannerImage {
+  width: 100%;
+  height: 450px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 10px;
+}
+
+
+@media (max-width: 992px) {
+  .bannerImage {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerImage {
+    height: 280px;
+    object-fit: contain;
+  }
+
+}
+

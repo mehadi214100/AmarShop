@@ -2,7 +2,10 @@ from django.shortcuts import render,redirect,get_object_or_404
 from shop.models import Product
 from .models import Coupon,CartItem,Wishlist
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def viewcart(request):
     currenet_user = request.user
     cart_items = []
@@ -44,7 +47,7 @@ def viewcart(request):
 
     return render(request,"cart/cart.html",context)
 
-
+@login_required
 def add_cart(request,product_id):
     if not request.user.is_authenticated:
         return redirect('user_login')

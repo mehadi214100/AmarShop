@@ -124,6 +124,10 @@ def payment_success(request):
                 order.paid = True
                 order.save()
                
+                for item in order.items.all():
+                    item.product.stock -= item.quantity
+                    item.product.save()
+
                 user = order.user
                 if user:
                     login(request, user)  # logs in the user automatically

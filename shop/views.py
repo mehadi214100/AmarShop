@@ -1,13 +1,44 @@
 from django.shortcuts import render
-from .models import Product,Category
+from .models import Product,Category,FlashSale
+from django.utils import timezone
+from .models import CarouselBanner
+
 def home(request):
     categories = Category.objects.all().filter(is_available=True)
     popular_categories = Category.objects.filter(is_available=True,is_popular=True)[:3]
     products = Product.objects.select_related('category').filter(available=True,category__is_available=True)
+    
+    
+    now = timezone.now()
+    flash_sales = FlashSale.objects.filter(is_active=True, end_time__gte=now).order_by('-start_time')
+
+    sales_with_countdown = []
+
+    for sale in flash_sales:
+        remaining = sale.end_time - now
+        if remaining.total_seconds() > 0:
+            days = remaining.days
+            hours, remainder = divmod(remaining.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+        else:
+            days = hours = minutes = seconds = 0
+
+        sales_with_countdown.append({
+            'sale': sale,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds,
+        })
+
+    banners = CarouselBanner.objects.filter(is_active=True).order_by('order')
+    
     context = {
         "categories":categories,
         "popular_categories":popular_categories,
         "products":products,
+        "sales_with_countdown":sales_with_countdown,
+        "banners": banners,
     }
     return render(request,"shop/home.html",context)
 
@@ -31,6 +62,7 @@ def all_products(request,category_wase=None):
     if category:
         if category != "all":
             products = Product.objects.select_related('category').filter(category__slug=category)
+    
 
     if price_min:
         products = products.filter(price__gte=price_min)
@@ -48,10 +80,11 @@ def all_products(request,category_wase=None):
         products = products.order_by('-created_at')
 
     categories = Category.objects.all().filter(is_available=True)
+       
 
     context = {
         "products":products,
-        'categories':categories
+        'categories':categories,
     }
     return render(request,"shop/product_list.html",context)
 
@@ -77,3 +110,11 @@ def search_product(request):
         "products":products,
     }
     return render(request,"shop/product_list.html",context)
+
+
+def flash_product(request,flash_id):
+    sale = FlashSale.objects.all().filter(id=flash_id).first()
+    context = {
+        "sale":sale,
+    }
+    return render(request,"shop/flash_product.html",context)

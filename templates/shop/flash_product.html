@@ -7,73 +7,26 @@
 
 <!-- Horizontal Filter Bar with Action Buttons -->
 <div class="container-fluid bg-white py-3 mb-4 border-bottom">
-  <div class="row g-3 align-items-center">
-    
-    
-    <form method="GET" class="row g-3 align-items-center mb-4">
-    <!-- Category Filter -->
-    <div class="col-md-3">
-      <label class="form-label small mb-1">Category</label>
-      <select name="category" class="form-select form-select-sm">
-        <option value="all">All Categories</option>
-        {% for category in categories %}
-        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
-            {{ category.name }}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    
-    <!-- Price Filter -->
-    <div class="col-md-3">
-      <label class="form-label small mb-1">Price Range</label>
-      <div class="input-group input-group-sm">
-        <span class="input-group-text">$</span>
-        <input type="number" name="price_min" class="form-control" placeholder="Min" min="0" value="{{ request.GET.price_min }}">
-        <span class="input-group-text">to</span>
-        <input type="number" name="price_max" class="form-control" placeholder="Max" value="{{ request.GET.price_max }}">
-      </div>
-    </div>
-    
-    <!-- Sorting -->
-    <div class="col-md-2">
-      <label class="form-label small mb-1">Sorting</label>
-      <select name="sort_by" class="form-select form-select-sm">
-        <option value="">Default</option>
-        <option value="low_to_high" {% if request.GET.sort_by == "low_to_high" %}selected{% endif %}>Price: Low to High</option>
-        <option value="high_to_low" {% if request.GET.sort_by == "high_to_low" %}selected{% endif %}>Price: High to Low</option>
-        <option value="new_arrivals" {% if request.GET.sort_by == "new_arrivals" %}selected{% endif %}>Newest Arrivals</option>
-      </select>
-    </div>
 
-    <div class="col-md-2 align-self-end">
-        <button type="submit" class="btn btn-secondary btn-sm w-100 border-0">
-            <i class="bi bi-funnel"></i> Filter
-        </button>
-    </div>
-</form>
-
-
-    
-  </div>
-
-    
 
 <!-- Results Header -->
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
     <div class="mb-3 mb-md-0">
-      {% if products.count %}
-        <h5 class="mb-0">{{products.count}} Products Found</h5>
-      {% else %}
-        <h5 class="mb-0">No Products Found</h5>
-      {% endif %}
+      
+    <h5 class="mb-0"> <span class="text-danger display-3">{{ sale.discount_percentage }}% </span>{{sale.name}}</h5>
+      
+    </div>
+    <div class="mb-3 mb-md-0">
+      
+    <h5 class="mb-0">Offer End : <span class="text-danger display-7">{{sale.end_time|date:"l, d M Y H:i"}}</span></h5>
+      
     </div>
 
 </div>
 
 
 <div class="row">
-    {% for product in products  %}
+    {% for product in sale.products.all  %}
 
 <div class="col-md-3 mt-2">
     <figure class="card card-product-grid h-100 d-flex flex-column">
@@ -120,6 +73,28 @@
 
 </div> <!-- container .//  -->
 </section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
 
+<!-- ========================= SECTION SUBSCRIBE  ========================= -->
+<section class="padding-y-lg bg-light border-top">
+<div class="container">
+	<p class="pb-2 text-center">Delivering the latest product trends and industry news straight to your inbox</p>
+
+	<div class="row justify-content-md-center">
+		<div class="col-lg-4 col-sm-6">
+			<form class="row g-2">
+				<div class="col-8">
+					<input class="form-control" placeholder="Your Email" type="email">
+				</div> <!-- col.// -->
+				<div class="col-4">
+					<button type="submit" class="btn btn-block btn-warning"><i class="fa fa-envelope"></i> Subscribe</button>
+				</div> <!-- col.// -->
+			</form>
+			<small class="form-text">We'll never share your email address with a third-party.</small>
+		</div> <!-- col-md-6.// -->
+	</div>
+</div>
+</section>
+<!-- ========================= SECTION SUBSCRIBE END// ========================= -->
 
 {% endblock content %}
