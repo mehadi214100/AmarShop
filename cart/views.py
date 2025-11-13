@@ -53,7 +53,7 @@ def add_cart(request,product_id):
         return redirect('user_login')
     
     current_user = request.user
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     cart_item = CartItem.objects.filter(product=product,user=current_user)
 
     if cart_item.exists():
@@ -113,14 +113,14 @@ def apply_coupon(request):
 
 def remove_cart(request,item_id):
     user = request.user
-    item = CartItem.objects.get(user=user,id=item_id)
+    item =  get_object_or_404(CartItem, user=user, id=item_id)
     item.delete()
     return redirect('cart')
 
 
 def addwishlist(request,item_id):
     user = request.user
-    cart_item  = CartItem.objects.get(user=user,id=item_id)
+    cart_item  = get_object_or_404(CartItem, user=user, id=item_id)
     product = cart_item.product
     cart_item ,created = Wishlist.objects.get_or_create(user=user,product=product)
 

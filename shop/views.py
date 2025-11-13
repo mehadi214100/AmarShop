@@ -118,3 +118,8 @@ def flash_product(request,flash_id):
         "sale":sale,
     }
     return render(request,"shop/flash_product.html",context)
+
+
+
+def coming_soon(request):
+    return render(request, 'coming_soon.html')

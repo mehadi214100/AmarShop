@@ -57,7 +57,11 @@ def create_order(request):
 
 
 def payment_process(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    try:
+        order = Order.objects.get(id=order_id, user=request.user)
+    except Order.DoesNotExist:
+        return render(request, '404.html', status=404)
+
 
     sslcz = SSLCOMMERZ({
         'store_id': settings.SSLCZ_STORE_ID,
@@ -119,6 +123,8 @@ def payment_success(request):
         response = sslcz.validationTransactionOrder(val_id)
         if response.get('status') == 'VALID':
             order = Order.objects.filter(transaction_id=tran_id).first()
+            if not order:
+                return render(request, '404.html', status=404)
             if order:
                 order.status = 'Paid'
                 order.paid = True
@@ -130,7 +136,7 @@ def payment_success(request):
 
                 user = order.user
                 if user:
-                    login(request, user)  # logs in the user automatically
+                    login(request, user) 
             return render(request, 'payment/payment_success.html', {'order': order})
         else:
             return render(request, 'payment/payment_fail.html', {'msg': 'Invalid transaction'})

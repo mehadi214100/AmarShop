@@ -1,43 +1,40 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from accounts.models import userProfile,User
+from django.shortcuts import render, redirect, get_object_or_404
+from accounts.models import userProfile, User
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cart.models import Wishlist
 from order.models import Order
 
+@login_required
 def profile(request):
+    user_profile = userProfile.objects.filter(user=request.user).first()
+    if not user_profile:
+        return render(request, '404.html', status=404)
 
-    user = userProfile.objects.filter(user=request.user).first
     orders = Order.objects.filter(user=request.user)
     wishlist = Wishlist.objects.filter(user=request.user)
-    totalOrder = orders.count()
-    totalwishlist = wishlist.count()
-    total_order_amount = 0
-
-    if orders:
-        for order in orders:
-            total_order_amount += order.total_price
-
+    total_order_amount = sum(order.total_price for order in orders)
+    
     context = {
-        "userProfile":user,
-        "totalOrder":totalOrder,
-        'total_order_amount':total_order_amount,
-        'totalwishlist':totalwishlist,
-        'orders':orders,
+        "userProfile": user_profile,
+        "totalOrder": orders.count(),
+        'total_order_amount': total_order_amount,
+        'totalwishlist': wishlist.count(),
+        'orders': orders,
     }
+    return render(request, 'profile/main.html', context)
 
-    return render(request,'profile/main.html',context)
 
-
+@login_required
 def myorders(request):
-
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    context = {
-         'orders':orders,
-    }
+    if not orders.exists():
+        return render(request, '404.html', status=404)
 
-    return render(request,'profile/myorders.html',context)
+    context = {'orders': orders}
+    return render(request, 'profile/myorders.html', context)
+
 
 @login_required
 def settings(request):
@@ -59,12 +56,21 @@ def settings(request):
     return render(request, 'profile/settings.html', context)
 
 
+@login_required
 def viewWishlist(request):
-    products = Wishlist.objects.filter(user = request.user)
-    return render(request,'profile/wishlist.html',{'products':products})
+    products = Wishlist.objects.filter(user=request.user)
+    if not products.exists():
+        return render(request, '404.html', status=404)
+    
+    return render(request, 'profile/wishlist.html', {'products': products})
 
-def removeWishlist(request,item_id):
-    products = Wishlist.objects.filter(user = request.user,id=item_id)
-    products.delete()
-    messages.success(request,"Wish item Remove Success")
+
+@login_required
+def removeWishlist(request, item_id):
+    product = Wishlist.objects.filter(user=request.user, id=item_id).first()
+    if not product:
+        return render(request, '404.html', status=404)
+
+    product.delete()
+    messages.success(request, "Wish item removed successfully")
     return redirect("viewWishlist")

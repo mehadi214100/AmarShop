@@ -51,7 +51,7 @@
                         <div class="mx-2">
                             <a href="{% url "cart" %}" class="d-flex align-items-center text-decoration-none">
                                 <i class="fa fa-shopping-cart fs-4 text-secondary"></i>
-                                <small class="ms-1 d-none d-md-inline text-secondary">Cart</small>
+                                <small class="ms-1 d-none d-md-inline text-secondary">Cart <span class="fw-bold">[{{cart_item_count}}]</span> </small>
                             </a>
                         </div>
 
@@ -125,30 +125,32 @@
                 <div class="col-md col-6 mb-4 mb-md-0">
                     <h6 class="title">Company</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">About us</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Career</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Find a store</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Rules and terms</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Sitemap</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Career</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">About us</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Find a store</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Rules and terms</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Sitemap</a></li>
                     </ul>
                 </div>
                 <div class="col-md col-6 mb-4 mb-md-0">
                     <h6 class="title">Help</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">Contact us</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Money refund</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Order status</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Shipping info</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Open dispute</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Contact us</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Money refund</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Order status</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Shipping info</a></li>
+                        <li><a href="{% url "coming_soon" %}" class="text-white text-decoration-none">Open dispute</a></li>
                     </ul>
                 </div>
                 <div class="col-md col-6 mb-4 mb-md-0">
                     <h6 class="title">Account</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white text-decoration-none">User Login</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">User register</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">Account Setting</a></li>
-                        <li><a href="#" class="text-white text-decoration-none">My Orders</a></li>
+                        <li><a href="{% url "user_login" %}" class="text-white text-decoration-none">User Login</a></li>
+                        <li><a href="{% url "user_register" %}" class="text-white text-decoration-none">User register</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url "settings" %}" class="text-white text-decoration-none">Account Setting</a></li>
+                            <li><a href="{% url "myorders" %}" class="text-white text-decoration-none">My Orders</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-md mb-4 mb-md-0">
