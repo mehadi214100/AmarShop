@@ -8,7 +8,6 @@ def home(request):
     popular_categories = Category.objects.filter(is_available=True,is_popular=True)[:3]
     products = Product.objects.select_related('category').filter(available=True,category__is_available=True)
     
-    
     now = timezone.now()
     flash_sales = FlashSale.objects.filter(is_active=True, end_time__gte=now).order_by('-start_time')
 
@@ -118,8 +117,6 @@ def flash_product(request,flash_id):
         "sale":sale,
     }
     return render(request,"shop/flash_product.html",context)
-
-
 
 def coming_soon(request):
     return render(request, 'coming_soon.html')
