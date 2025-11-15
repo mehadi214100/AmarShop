@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from cart.models import CartItem
+from cart.models import CartItem,Coupon
 from django.contrib import messages
 from .models import Order, OrderItem
 from django.conf import settings
@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import uuid
 from django.contrib.auth import login
 
+
 def create_order(request):
     cart_items = CartItem.objects.filter(user=request.user)
     if not cart_items.exists():
@@ -17,7 +18,27 @@ def create_order(request):
 
     total = sum(item.product.discounted_price() * item.quantity for item in cart_items)
     shipping = 150
-    grand_total = total + shipping
+   
+    coupon_id = request.session.get('coupon_id')
+    
+    discount = 0
+    if coupon_id:
+        try:
+            coupon = Coupon.objects.get(id=coupon_id)
+            
+            if coupon.is_valid():
+                
+                if coupon.discount_type == 'fixed':
+                    discount = coupon.discount_value
+                elif coupon.discount_type == 'percent':
+                    discount = total * (coupon.discount_value / 100)
+            else:
+                request.session.pop('coupon_id', None)
+        except Coupon.DoesNotExist:
+            request.session.pop('coupon_id', None)
+
+    grand_total_after_discount = total + shipping - discount
+
 
     if request.method == "POST":
         full_name = request.POST.get('full_name')
@@ -35,8 +56,12 @@ def create_order(request):
             address=address,
             city=city,
             postal_code=postal_code,
-            total_price=grand_total,
+            total_price=total,                   
+            discount=discount,                    
+            shipping_cost=shipping,               
+            grand_total=grand_total_after_discount, 
         )
+
 
         for item in cart_items:
             OrderItem.objects.create(
@@ -49,18 +74,20 @@ def create_order(request):
         cart_items.delete()
         return redirect(f'/order/payment-process/{order.id}/')
 
+
+
     return render(request, 'orders/checkout.html', {
         "total": total,
-        "grand_total": grand_total,
+        "grand_total": grand_total_after_discount,
         "cart_items": cart_items,
+        "discount":discount,
     })
 
 
 def payment_process(request, order_id):
-    try:
-        order = Order.objects.get(id=order_id, user=request.user)
-    except Order.DoesNotExist:
-        return render(request, '404.html', status=404)
+    
+    order = Order.objects.get(id=order_id, user=request.user)
+    
 
 
     sslcz = SSLCOMMERZ({
@@ -70,7 +97,7 @@ def payment_process(request, order_id):
     })
 
     post_body = {
-        'total_amount': float(order.total_price),
+        'total_amount': float(order.grand_total),
         'currency': "BDT",
         'tran_id': f"ORDER_{order.id}_{uuid.uuid4().hex[:6]}",
         'success_url': request.build_absolute_uri('/order/payment-success/'),
@@ -101,6 +128,7 @@ def payment_process(request, order_id):
     if response.get('GatewayPageURL'):
         order.transaction_id = post_body['tran_id']
         order.save()
+        request.session.pop('coupon_id', None)
         return HttpResponseRedirect(response['GatewayPageURL'])
     else:
         return render(request, 'payment/error.html', {'response': response})
@@ -123,8 +151,7 @@ def payment_success(request):
         response = sslcz.validationTransactionOrder(val_id)
         if response.get('status') == 'VALID':
             order = Order.objects.filter(transaction_id=tran_id).first()
-            if not order:
-                return render(request, '404.html', status=404)
+            
             if order:
                 order.status = 'Paid'
                 order.paid = True

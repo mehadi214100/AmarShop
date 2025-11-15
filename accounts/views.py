@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from .models import User,userProfile
 from django.contrib.auth.hashers import check_password
-
+from .models import userProfile
 def user_register(request):
 
     if request.method == 'POST':
@@ -44,7 +44,10 @@ def user_login(request):
         else:
             login(request,user)
             messages.success(request, "You have successfully logged in.")
-            return redirect("home")
+
+            if userProfile.objects.filter(user=user).exists():
+                return redirect("home")
+            return redirect("settings")
         
 
     return render(request,"account/login.html")

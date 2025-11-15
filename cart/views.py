@@ -34,7 +34,7 @@ def viewcart(request):
         except Coupon.DoesNotExist:
             request.session.pop('coupon_id', None)
             
-        request.session.pop('coupon_id', None)
+        
 
     grand_total = total_price - discount if total_price > discount else 0
 
